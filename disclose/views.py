@@ -40,3 +40,9 @@ def new_pet(request):
         pet.save()
 
         return HttpResponse("teste")
+
+@login_required
+def your_pets(request):
+    if request.method == "GET":
+        pets = Pet.objects.filter(user=request.user)
+        return render(request, 'your_pets.html', {'pets': pets})
