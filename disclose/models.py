@@ -25,7 +25,7 @@ class Pet(models.Model):
     number_phone = models.CharField(max_length=14)
     tags = models.ManyToManyField(Tag)
     breed = models.ForeignKey(Breed, on_delete=models.DO_NOTHING)
-    status = models.CharField(max_length=1, choices=choice_status)
+    status = models.CharField(max_length=1, choices=choice_status, default='P')
 
     def __str__(self):
         return self.pet_name
