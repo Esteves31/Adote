@@ -70,3 +70,7 @@ def see_adopt_application(request):
     if request.method == "GET":
         requests = Adoption_application.objects.filter(user=request.user).filter(status="AG")
         return render(request, 'see_adopt_application.html', {'requests': requests})
+
+def dashboard(request):
+    if request.method ==  "GET":
+        return render(request, 'dashboard.html')
