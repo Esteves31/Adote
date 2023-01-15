@@ -1,11 +1,12 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from .models import Tag, Breed, Pet
 from django.contrib import messages
 from django.contrib.messages import constants
 from django.shortcuts import redirect
 from adopt.models import Adoption_application
+from django.views.decorators.csrf import csrf_exempt
 
 @login_required
 
@@ -74,3 +75,17 @@ def see_adopt_application(request):
 def dashboard(request):
     if request.method ==  "GET":
         return render(request, 'dashboard.html')
+
+@csrf_exempt
+def adoption_by_breed_api(request):
+    breeds = Breed.objects.all()
+    number_adoptions = []
+
+    for breed in breeds:
+        adopts = Adoption_application.objects.filter(pet__breed=breed).count()
+        number_adoptions.append(adopts)
+
+    breeds = [breed.breed for breed in breeds]
+    data = {'number_adoptions': number_adoptions,
+            'labels': breeds}
+    return JsonResponse(data)
