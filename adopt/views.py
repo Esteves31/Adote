@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.messages import constants
 from .models import Adoption_application
 from datetime import datetime
+from django.core.mail import send_mail
 
 def list_pets(request):
     if request.method == "GET":
@@ -36,3 +37,26 @@ def adoption_application(request, id_pet):
 
     messages.add_message(request, constants.SUCCESS, 'Pedido de adoção realizado, você receberá um e-mail caso ele seja aprovado.')
     return redirect('/adotar')
+
+def processes_adopt_application(request, id_request):
+    status = request.GET.get('status')
+    adopt_request = Adoption_application.objects.get(id=id_request)
+
+    if status == "A":
+        adopt_request.status = "AP"
+        string = '''PARABÉNSS, seu pedido de adoção foi aprovado! Esperamos que goste muito de seu novo companheiro'''
+    elif status == "R":
+        adopt_request.status = "R"
+        string = '''Eita, infelizmente seu pedido não foi aprovado... Mas não fique triste, você pode buscar por um outro bichinho'''
+
+    adopt_request.save()
+
+    email = send_mail(
+        'Seu pedido de adoção foi processado',
+        string,
+        'matheus.resteves@gmail.com',
+        [adopt_request.user.email,]
+    )
+
+    messages.add_message(request, constants.SUCCESS, 'O pedido de adoção foi processado corretamente!')
+    return redirect('/divulgar/ver_pedido_adocao/')
