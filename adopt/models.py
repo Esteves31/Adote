@@ -13,3 +13,6 @@ class Adoption_application(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     date = models.DateTimeField()
     status = models.CharField(max_length=2, choices=choices_status, default='AG')
+
+    def __str__(self):
+        return self.pet.pet_name
