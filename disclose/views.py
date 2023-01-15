@@ -5,6 +5,7 @@ from .models import Tag, Breed, Pet
 from django.contrib import messages
 from django.contrib.messages import constants
 from django.shortcuts import redirect
+from adopt.models import Adoption_application
 
 @login_required
 
@@ -64,3 +65,8 @@ def see_pet(request, id):
     if request.method == "GET":
         pet = Pet.objects.get(id=id)
         return render(request, 'see_pet.html', {'pet': pet})
+
+def see_adopt_application(request):
+    if request.method == "GET":
+        requests = Adoption_application.objects.filter(user=request.user).filter(status="AG")
+        return render(request, 'see_adopt_application.html', {'requests': requests})
