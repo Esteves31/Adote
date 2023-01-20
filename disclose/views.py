@@ -9,7 +9,6 @@ from adopt.models import Adoption_application
 from django.views.decorators.csrf import csrf_exempt
 
 @login_required
-
 def new_pet(request):
     if request.method == "GET":
         tags = Tag.objects.all()
@@ -52,6 +51,7 @@ def your_pets(request):
         pets = Pet.objects.filter(user=request.user)
         return render(request, 'your_pets.html', {'pets': pets})
 
+@login_required
 def remove_pet(request, id):
     pet = Pet.objects.get(id=id)
     if not pet.user == request.user:
@@ -62,16 +62,19 @@ def remove_pet(request, id):
     messages.add_message(request, constants.SUCCESS, 'O pet foi removido com sucesso!')
     return redirect('/divulgar/seus_pets/')
 
+@login_required
 def see_pet(request, id):
     if request.method == "GET":
         pet = Pet.objects.get(id=id)
         return render(request, 'see_pet.html', {'pet': pet})
 
+@login_required
 def see_adopt_application(request):
     if request.method == "GET":
         requests = Adoption_application.objects.filter(user=request.user).filter(status="AG")
         return render(request, 'see_adopt_application.html', {'requests': requests})
 
+@login_required
 def dashboard(request):
     if request.method ==  "GET":
         return render(request, 'dashboard.html')
