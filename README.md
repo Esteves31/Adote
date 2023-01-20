@@ -24,4 +24,8 @@ Dashboards
 - Github
 - Framework Django
 
+# Capturas do site:
 
+<div>
+    <img src="https://user-images.githubusercontent.com/107145641/213818990-427ab072-73e1-46b4-b3b5-60f3a4e52ed8.png" width="300px" />
+</div>
